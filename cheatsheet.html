@@ -1,0 +1,90 @@
+---
+title: HPC &amp; SLURM Cheat Sheet
+permalink: cheatsheet.html
+customjs: ./assets/js/cheat.js
+---
+
+<p>Welcome to the Slurm-O-Matic Cheat Sheet, a tool to help you interact with Slurm. </p>
+<p>This tool will use your inputs to generate commands. When you find what you need, click the Copy to Clipboard button and paste into your terminal.</p>
+
+
+  <div class="form-group">
+
+    <div class="form-row d-flex align-items-center w-100">
+      <div class="flex-grow-1">
+        <label class="sr-only">SUnetID</label>
+        <input type="text" class="form-control" name="sunetid" id="sunetid" placeholder="SUnetID" maxlength="8" />
+      </div>
+      <div class="flex-grow-1 ps-4">
+        <label class="sr-only">JobID Number</label>
+        <input type="text" class="form-control" name="jobid" id="jobid" placeholder="JobID" />
+      </div>
+      <div class="flex-grow-1 ps-4">
+        <a class="btn btn-primary generate" id="generateBtn" title="Generate Commands"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate!</a>
+      </div>
+    </div>
+  </div>
+  <small class="form-text text-muted">If you don't know your JobID, use the first command below to see your open jobs.</small>
+
+
+<div class="tips">
+  <h2>Check the status of your job(s)</h2>
+  <div class="form-group">
+    <div class="form-row d-flex align-items-center w-100">
+      <div class="flex-grow-1 tip-input">
+        <input type="text" id="slurmStatus" class="form-control terminal" readonly placeholder="Add your SUnetID to see this one" />
+      </div>
+      <div class="col-auto tip-btn ps-1">
+        <a class="btn btn-primary copy" title="Copy to Clipboard" data-target="slurmStatus"><i class="fa-regular fa-clipboard"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <h2>Check the GPU Utilization of your job</h2>
+    <div class="form-row d-flex align-items-center w-100">
+      <div class="flex-grow-1 tip-input">
+        <input type="text" id="slurmGpuUtil" class="form-control terminal" readonly placeholder="Add your JobID to see this one" />
+      </div>
+      <div class="col-auto tip-btn ps-1">
+        <a class="btn btn-primary copy" title="Copy to Clipboard" data-target="slurmGpuUtil"><i class="fa-regular fa-clipboard"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <h2>Cancel your job</h2>
+    <div class="form-row d-flex align-items-center w-100">
+      <div class="flex-grow-1 tip-input">
+        <input type="text" id="slurmCancel" class="form-control terminal" readonly placeholder="Add your JobID to see this one" />
+      </div>
+      <div class="col-auto tip-btn ps-1">
+        <a class="btn btn-primary copy" title="Copy to Clipboard" data-target="slurmCancel"><i class="fa-regular fa-clipboard"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <h2>See the resources you have used across Slurm for a specific time period.</h2>
+    <div class="d-flex align-items-center">
+      <label for="from" class="pe-4 m-0">From</label>
+      <input type="text" id="from" name="from" class="dp-from">
+      <label for="to" class="pe-4 ps-4 m-0">to</label>
+      <input type="text" id="to" name="to">
+    </div>
+    <div class="form-row d-flex align-items-center w-100 mt-5">
+      <div class="flex-grow-1 tip-input">
+        <input type="text" id="slurmHistory" class="form-control terminal" readonly placeholder="Add your SUnetID & choose dates to see this one" />
+      </div>
+      <div class="flex-shrink-1 tip-btn ps-1">
+        <a class="btn btn-primary copy" title="Copy to Clipboard" data-target="slurmHistory"><i class="fa-regular fa-clipboard mx-auto"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</body>
+
+</html>
