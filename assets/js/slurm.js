@@ -36,7 +36,7 @@
       function populateResourceTable(config) {
         var $tableBody = $('#resource-table tbody');
         //have to have a skeleton row for accessibility, this removes it
-        //$tableBody.empty();
+        $tableBody.empty();
         for (i = 0; i < queueLength; i++) {
           if (config.queues[i].showTable) { //skip if this is fake
             var tableRow = $('<tr>');
@@ -463,7 +463,7 @@
 
         var minString = "";
         var hasMinutes = "";
-        if (min > 00) {
+        if (min > 0) {
           hasMinutes = true;
         }
         if (jobname) {
