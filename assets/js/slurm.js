@@ -36,7 +36,7 @@
       function populateResourceTable(config) {
         var $tableBody = $('#resource-table tbody');
         //have to have a skeleton row for accessibility, this removes it
-        //$tableBody.empty();
+        $tableBody.empty();
         for (i = 0; i < queueLength; i++) {
           if (config.queues[i].showTable) { //skip if this is fake
             var tableRow = $('<tr>');
@@ -49,10 +49,7 @@
           }
           collapseResourceTableSession()
         }
-
-
       }
-
       function collapseResourceTableSession() {
         var tableToggle = checkSession('table-toggle');
         var tableToggleIcon = $('.table-toggle i');
