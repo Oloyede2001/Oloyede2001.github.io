@@ -50,28 +50,7 @@
           collapseResourceTableSession()
         }
 
-        // Define addNewData inside the AJAX callback to ensure it's in scope
-        function addNewData(newQueue) {
-          config.queues.push(newQueue);
-          populateResourceTable(config);
-        }
 
-        var newData = {
-          name: 'Queue 7',
-          cpu: 'Dual Core Intel Xeon Gold 6130 (16C 2.1GHz)',
-          memory: '128GB',
-          memoryNum: 128,
-          nodes: '4',
-          displayNodes: '4',
-          gpus: 'Single P100',
-          gpuNumber: 1,
-          gpuFlag: '#SBATCH -C GPU_SKU:P100_PCIE',
-          cores: 32,
-          gpuId: 'P100_PCIE',
-          coresLimit: 16,
-          showTable: true
-        };
-        addNewData(newData);
       }
 
       function collapseResourceTableSession() {
