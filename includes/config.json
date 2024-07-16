@@ -6,13 +6,13 @@
 	},
 	"queues": [
 		{
-			"name": "normal",
+			"name": "Placeholder",
 			"cpu": "Dual Core Intel Xeon Gold 6130 (16C 2.1GHz)",
 			"memory": "384GB",
 			"memoryNum":350,
-			"nodes": "2",
+			"nodes": "4",
 			"displayNodes" : "16",
-			"cores" : 64,
+			"cores" : 72,
 			"coresLimit" : 32,
 			"showTable" : true
 		},
