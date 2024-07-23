@@ -71,8 +71,18 @@ customjs: ./assets/js/slurm.js
     </div>
 
     <div class="form-group" id='runtime'>
-     
-    
+      <label>Running Time</label>
+      <div class="form-row form-inline runtime-form d-flex align-items-top mt-2">
+        <div class="flex-shrink-1">
+          <label class="sr-only" for="runtimeDays">Days</label>
+          <select id="runtimeDays" class="form-control fancy-dropdown">
+            <option>0</option>
+          </select>
+          <small class="form-text text-muted text-center">Days</small>
+        </div>
+        <div class="ps-3 pe-3 flex-shrink-1">
+          <span class="separator">:</span>
+        </div>
         <div class="flex-shrink-1">
           <label class="sr-only" for="runtimeHr">Hours</label>
           <select id="runtimeHr" class="form-control fancy-dropdown">
