@@ -537,7 +537,7 @@
         var runtimeHr = $('#runtimeHr');
         runtimeHr.empty();
 
-        /*
+        
         // Populate days dropdown
         var runtimeDays = $('#runtimeDays');
         runtimeDays.empty();
@@ -545,7 +545,7 @@
         selectedString = (d == 0) ? " selected" : "";
          runtimeDays.append('<option value="' + d + '"' + selectedString + '>' + d + '</option>');
       }
-        */
+        
         for (j = 0; j <= runtimeMaxHour; j++) {
           selectedString = (j == runtimeDefault) ? " selected" : "";
           //handle single-digit numbers
