@@ -300,14 +300,15 @@
         // Grab Queue
         var queue = $('.queue_radio:checked').val();
         var queueStr = "#SBATCH --partition " + queue + "\n";
-
+      
         // Grab resources
         var cpu = getFancyDropdown('#cpu');
         var memory = getFancyDropdown('#memory');
-        var nodes = getFancyDropdown('#nodes')
+        var nodes = getFancyDropdown('#nodes');
+        var runtimeDays = getFancyDropdown('#runtimeDays');
         var runtimeHour = getFancyDropdown('#runtimeHr');
         var runtimeMinute = getFancyDropdown('#runtimeMin');
-        var runtimeFormat = runtimeHour + ":" + runtimeMinute + ":00";
+        var runtimeFormat = runtimeDays + "-" + runtimeHour + ":" + runtimeMinute + ":00";
         var gpu = null;
         gpu = $("#gpu").val();
         var cpuStr = "#SBATCH --ntasks " + cpu + "\n";
@@ -335,18 +336,18 @@
           });
           modules = $('#modules').select2('val');
         }
-
+      
         var modulesStr = "";
         if (modules != null) {
           for (i = 0; i < modules.length; i++) {
             modulesStr += "module load " + modules[i].replace(/\(default\)/, "") + "\n";
           }
         }
-
+      
         // Grab commands
         var commands = $('#commands').val();
         var commandsStr = commands + "\n";
-
+      
         // Recommended settings
         var sunetid = $('#sunetid').val();
         var jobname = $('#jobname').val();
@@ -355,14 +356,14 @@
         var emailStr = sunetid == "" ? "" : "# Get email notification when job finishes or fails\n#SBATCH --mail-user=" + email + "\n#SBATCH --mail-type=END,FAIL\n";
         var jobnameStr = jobname == "" ? "" : "# Give your job a name, so you can recognize it in the queue overview\n#SBATCH -J " + jobname + "\n";
         var workingdirStr = workingdir == "" ? "" : "#SBATCH -D " + workingdir + "\n";
-
+      
         // Optional settings
         var stdout = $('#stdout').val();
         var stderr = $('#stderr').val();
-
+      
         var stdoutStr = stdout == "" ? "" : "#SBATCH -o " + stdout + "\n";
         var stderrStr = stderr == "" ? "" : "#SBATCH -e " + stderr + "\n";
-
+      
         var script = "#!/bin/bash\n" +
           "# ----------------SLURM Parameters----------------\n" +
           queueStr +
@@ -392,10 +393,10 @@
           }
         }
         //add narrative
-        populateNarrative(nodes, cpu, memory, runtimeHour, runtimeMinute, gpu, queue, jobname, sunetid, stdout, stderr, workingdir);
+        populateNarrative(nodes, cpu, memory, runtimeDays, runtimeHour, runtimeMinute, gpu, queue, jobname, sunetid, stdout, stderr, workingdir);
         $('#workingdir').val(workingdir);
-
       }
+      
 
       function populateNarrative(nodes, cpu, mem, hour, min, gpu, queue, jobname, sunetid, stdout, stderr, workingdir) {
         var narrative = $('#narrative');
@@ -535,7 +536,7 @@
         var selectedString;
         var runtimeHr = $('#runtimeHr');
         runtimeHr.empty();
-        
+
         /*
         // Populate days dropdown
         var runtimeDays = $('#runtimeDays');
