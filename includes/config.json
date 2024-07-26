@@ -2,7 +2,7 @@
 	"config": {
 		"title": "Slurm Script Generator",
 		"apps_url": "./includes/modules.txt",
-		"runtimeLimit" : 48
+		"runtimeLimit" : 25
 	},
 	"queues": [
 		{

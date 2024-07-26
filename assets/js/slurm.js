@@ -507,14 +507,14 @@
 
         var runtimeMin = $('#runtimeMin');
         runtimeMin.empty();
-        for (j = 0; j < 60; j++) {
+        for (j = 0; j <= 59; j++) {
           display = (j > 9) ? j : "0" + j;
           runtimeMin.append('<option value="' + display + '">' + display + '</option>');
         }
 
         var runtimeDays = $('#runtimeDays');
         runtimeDays.empty();
-        for (d = 0; d <= 7; d++) {
+        for (d = 0; d <= 20; d++) {
           selectedString = (d == 0) ? " selected" : "";
           runtimeDays.append('<option value="' + d + '"' + selectedString + '>' + d + '</option>');
         }
