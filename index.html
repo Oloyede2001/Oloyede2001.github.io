@@ -43,32 +43,27 @@ customjs: ./assets/js/slurm.js
       <div id="choose-gpu"></div>
     </div>
 
-    <h2>Allocate Resources</h2>
-    <div class="form-group">
-      <label for="nodes">Nodes <span id="nodeRange" class='form-text text-muted label-note'></span></label>
-      <select id="nodes" class="form-control fancy-dropdown">
-        <option selected value="<>">---</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="cpu"><span class="cpu-gpu">CPU/Cores</span> <span id="coreRange" class='form-text text-muted label-note'></span></label>
-      <select id="cpu" class="form-control fancy-dropdown">
-        <option selected value="<>">---</option>
-      </select>
-      <small id="cpuHelp" class="form-text text-muted"></small>
-    </div>
-    <div class="form-group">
-      <label for="memory">Memory (GB) <span id="memRange" class='form-text text-muted label-note'></span></label>
-      <select id="memory" class="form-control fancy-dropdown">
-        <option selected value="<>">---</option>
-      </select>
-    </div>
-    <div class="form-group gpu-group">
-      <label for="gpu">GPUs <span id="gpuRange" class='form-text text-muted label-note'></span></label>
-      <select id="gpu" class="form-control fancy-dropdown">
-        <option selected value="<>">---</option>
-      </select>
-    </div>
+  <h2>Allocate Resources</h2>
+  <div class="form-group">
+    <label for="nodes">Nodes <span id="nodeRange" class='form-text text-muted label-note'></span></label>
+    <input type="text" id="nodes" class="form-control fancy-input" placeholder="---">
+  </div>
+  <div class="form-group">
+    <label for="cpu"><span class="cpu-gpu">CPU/Cores</span> <span id="coreRange" class='form-text text-muted label-note'></span></label>
+    <input type="text" id="cpu" class="form-control fancy-input" placeholder="---">
+    <small id="cpuHelp" class="form-text text-muted"></small>
+</div>
+  <div class="form-group">
+    <label for="memory">Memory (GB) <span id="memRange" class='form-text text-muted label-note'></span></label>
+    <input type="text" id="memory" class="form-control fancy-input" placeholder="---">
+</div>
+<div class="form-group gpu-group">
+    <label for="gpu">GPUs <span id="gpuRange" class='form-text text-muted label-note'></span></label>
+    <select id="gpu" class="form-control fancy-dropdown">
+    <option selected value="<>">---</option>
+  </select>
+</div>
+
 
     <div class="form-group" id='runtime'>
       <label>Running Time</label>
