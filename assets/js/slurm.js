@@ -539,7 +539,7 @@
 
         
         // Populate days dropdown
-        var runtimeDays = $('#runtimeDays');
+        var runtimeDays = $('#runtimeDays `');
         runtimeDays.empty();
         for (var d = 0; d <= 7; d++) {
         selectedString = (d == 0) ? " selected" : "";
