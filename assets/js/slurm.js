@@ -1,8 +1,6 @@
 (function($, window) {
-
   var SlurmOMatic = {
     init: function() {
-      //;
       this.renderUI();
     },
     renderUI: function() {
@@ -30,15 +28,14 @@
         bindEvents();
         return;
       }).fail(function(e) {
-        //console.log("An error has occurred.", e);
+        console.log("An error has occurred.", e);
       });
 
       function populateResourceTable(config) {
         var $tableBody = $('#resource-table tbody');
-        //have to have a skeleton row for accessibility, this removes it
         $tableBody.empty();
         for (i = 0; i < queueLength; i++) {
-          if (config.queues[i].showTable) { //skip if this is fake
+          if (config.queues[i].showTable) {
             var tableRow = $('<tr>');
             $("<td>").html(config.queues[i].name).appendTo(tableRow);
             $("<td>").html(config.queues[i].cpu).appendTo(tableRow);
@@ -47,9 +44,10 @@
             $("<td>").html(config.queues[i].gpus).appendTo(tableRow);
             $tableBody.append(tableRow);
           }
-          collapseResourceTableSession()
+          collapseResourceTableSession();
         }
       }
+
       function collapseResourceTableSession() {
         var tableToggle = checkSession('table-toggle');
         var tableToggleIcon = $('.table-toggle i');
@@ -58,14 +56,13 @@
         if (tableToggle == "collapsed") {
           resourceTable.hide();
           tableToggleIcon.addClass(showIcon).removeClass(hideIcon);
-        } else { //show it
+        } else {
           resourceTable.show();
           tableToggleIcon.addClass(hideIcon).removeClass(showIcon);
         }
       }
 
       function populateQueueRadio(config) {
-        //check the session
         var sessionRadio = checkSession('queue_radio');
         var $queueList = $('#choose-queue');
         $queueList.empty();
@@ -82,21 +79,19 @@
           var radioValue = uniqueArr[i];
           var radioId = radioValue.replace(/\s+/g, '-').toLowerCase();
           queueRadio.val(radioValue);
-          queueRadio.prop('id',radioId + i);
+          queueRadio.prop('id', radioId + i);
           if (radioValue == sessionRadio) {
             queueRadio.prop('checked', true);
           }
           queueRadio.appendTo(queueRow);
-          $('<label class="form-check-label mt-2">').prop('for',radioId + i).html(uniqueArr[i]).appendTo(queueRow);
+          $('<label class="form-check-label mt-2">').prop('for', radioId + i).html(uniqueArr[i]).appendTo(queueRow);
           $queueList.append(queueRow);
         }
-        //if no session info, select the first radio so the user doesn't see a bunch of nonsense in the script box
         if (!sessionRadio) {
           $('#choose-queue .queue_radio').first().prop("checked", true);
         }
       }
 
-      //This uses the values in config to populate the dropdowns to match the selected queue
       function populateResourceDropdowns(config) {
         var queue = $('.queue_radio:checked').val();
         handleGPU(queue);
@@ -113,17 +108,15 @@
             populateCores(cpuCount, cpuLimit);
 
             var memory = config.queues[i].memoryNum;
-            populateMemory(memory)
+            populateMemory(memory);
             var nodeCount = config.queues[i].nodes;
             populateNodes(nodeCount);
             if (config.queues[i].name == "gpu") {
               var gpuNumber = config.queues[i].gpuNumber;
               populateGpus(gpuNumber);
             }
-
           }
         }
-
       }
 
       function populateGpus(gpus) {
@@ -171,7 +164,6 @@
       }
 
       function populateGpuRadio(config) {
-        //check the session
         var sessionRadio = checkSession('gpu_radio');
         var $gpugroup = $('#choose-gpu');
         $gpugroup.empty();
@@ -179,21 +171,20 @@
           if (config.queues[i].gpus) {
             var gpuFlagRow = $('<div class="form-check"></div>');
             var gpuFlagRadio = $('<input type="radio" class="form-check-input gpu-flag-radio" name="gpuFlag">');
-            var radioValue = config.queues[i].gpuId
+            var radioValue = config.queues[i].gpuId;
             gpuFlagRadio.val(radioValue);
             var gpuFlagRadioId = radioValue.replace(/\s+/g, '-').toLowerCase();
             if (radioValue == sessionRadio) {
               gpuFlagRadio.prop('checked', true);
             }
-            gpuFlagRadio.attr("data-flag", config.queues[i].gpuFlag).prop('id',gpuFlagRadioId + i);
+            gpuFlagRadio.attr("data-flag", config.queues[i].gpuFlag).prop('id', gpuFlagRadioId + i);
             gpuFlagRadio.appendTo(gpuFlagRow);
-            $('<label class="form-check-label mt-2">').prop('for',gpuFlagRadioId + i).html(config.queues[i].gpus).appendTo(gpuFlagRow);
+            $('<label class="form-check-label mt-2">').prop('for', gpuFlagRadioId + i).html(config.queues[i].gpus).appendTo(gpuFlagRow);
+            $gpugroup.append(gpuFlagRow);
           }
-          $gpugroup.append(gpuFlagRow);
-
         }
       }
-      //makes a list of gpus and finds max among all flavors for generic option and creates new entry in config.
+
       function populateFakeGpu(config) {
         var $gpugroup = $('#choose-gpu');
         var minNodes = 0;
@@ -201,7 +192,6 @@
         var minCores = 0;
         var minCoresLim = 0;
         var minGpu = 0;
-        //start finding lowest number
         for (i = 0; i < queueLength; i++) {
           if (config.queues[i].gpuFlag) {
             var minNodesTest = config.queues[i].nodes;
@@ -225,7 +215,7 @@
               minMem = minMemTest;
             }
           }
-        } //end loop
+        }
         config.queues.push({
           "name": "gpu",
           "gpus": "No preference",
@@ -235,7 +225,7 @@
           "gpuNumber": minGpu,
           "cores": minCores,
           "coresLimit": minCoresLim
-        })
+        });
       }
 
       function handleGPU(queue) {
@@ -243,12 +233,10 @@
           $('.gpu-group').show();
 
           if ($(".gpu-flag-radio:checked").length == 0) {
-            //select the last radio, so the user doesn't see a bunch of nonsense in the script box
             $('#choose-gpu .gpu-flag-radio').last().prop("checked", true);
             populateResourceDropdowns(config);
           }
-
-        } else { //unselect/dump gpu options
+        } else {
           $(".gpu-group").hide();
           $(".gpu-flag-radio").prop('checked', false);
           var $gpus = $('#gpu');
@@ -259,7 +247,6 @@
       async function copyTextToClipboard(text) {
         try {
           await navigator.clipboard.writeText(text);
-          //console.log('Text copied to clipboard', text);
           notifyCopy();
         } catch (err) {
           console.error('Failed to copy: ', err);
@@ -267,17 +254,15 @@
       }
 
       function notifyCopy() {
-        //console.log('notifyCopy');
         baseWidth = $('#copyBtn').width();
         $('#copyBtn').width(baseWidth);
         copyBling();
         setTimeout(function() {
           copyUnBling();
-        }, 1000); // Delay in milliseconds
+        }, 1000);
       }
 
       function copyBling() {
-        //console.log('copyBling');
         $('#copyBtn').addClass('funkytown');
         $('.fancy-copy').addClass('copied');
         $('#copyBtn span').text(' Copied!');
@@ -287,7 +272,6 @@
       }
 
       function copyUnBling() {
-        //console.log('copyUnBling');
         $('#copyBtn').removeClass('funkytown');
         $('.fancy-copy').removeClass('copied');
         $('#copyBtn span').text(' Copy to Clipboard');
@@ -297,11 +281,9 @@
       }
 
       function generateScript() {
-        // Grab Queue
         var queue = $('.queue_radio:checked').val();
         var queueStr = "#SBATCH --partition " + queue + "\n";
-      
-        // Grab resources
+
         var cpu = getFancyDropdown('#cpu');
         var memory = getFancyDropdown('#memory');
         var nodes = getFancyDropdown('#nodes');
@@ -309,26 +291,22 @@
         var runtimeHour = getFancyDropdown('#runtimeHr');
         var runtimeMinute = getFancyDropdown('#runtimeMin');
         var runtimeFormat = runtimeDays + "-" + runtimeHour + ":" + runtimeMinute + ":00";
-        var gpu = null;
-        gpu = $("#gpu").val();
+        var gpu = $("#gpu").val();
         var cpuStr = "#SBATCH --ntasks " + cpu + "\n";
         var memStr = "#SBATCH --mem=" + memory + "\n";
         var nodesStr = "#SBATCH --nodes " + nodes + "\n";
         var runtimeString = "# Define how long the job will run d-hh:mm:ss\n#SBATCH --time " + runtimeFormat + "\n";
-        var gpuStr = "";
-        if (gpu != null) {
-          gpuStr = "#SBATCH --gres=gpu:" + gpu + "\n";
-        }
+        var gpuStr = gpu ? "#SBATCH --gres=gpu:" + gpu + "\n" : "";
         var gpuFlagStr = "";
         var gpuFlag = $('.gpu-flag-radio:checked').attr("data-flag");
         if (gpuFlag) {
           gpuFlagStr = gpuFlag + "\n";
         }
-        // Grab modules
+
         var modules;
         if ($('#modules').hasClass("select2-hidden-accessible")) {
           modules = $('#modules').select2('val');
-        } else { //gotta init select2
+        } else {
           $('#modules').select2({
             theme: 'bootstrap4',
             width: 'resolve',
@@ -336,19 +314,17 @@
           });
           modules = $('#modules').select2('val');
         }
-      
+
         var modulesStr = "";
         if (modules != null) {
           for (i = 0; i < modules.length; i++) {
             modulesStr += "module load " + modules[i].replace(/\(default\)/, "") + "\n";
           }
         }
-      
-        // Grab commands
+
         var commands = $('#commands').val();
         var commandsStr = commands + "\n";
-      
-        // Recommended settings
+
         var sunetid = $('#sunetid').val();
         var jobname = $('#jobname').val();
         var workingdir = $('#workingdir').val();
@@ -356,14 +332,13 @@
         var emailStr = sunetid == "" ? "" : "# Get email notification when job finishes or fails\n#SBATCH --mail-user=" + email + "\n#SBATCH --mail-type=END,FAIL\n";
         var jobnameStr = jobname == "" ? "" : "# Give your job a name, so you can recognize it in the queue overview\n#SBATCH -J " + jobname + "\n";
         var workingdirStr = workingdir == "" ? "" : "#SBATCH -D " + workingdir + "\n";
-      
-        // Optional settings
+
         var stdout = $('#stdout').val();
         var stderr = $('#stderr').val();
-      
+
         var stdoutStr = stdout == "" ? "" : "#SBATCH -o " + stdout + "\n";
         var stderrStr = stderr == "" ? "" : "#SBATCH -e " + stderr + "\n";
-      
+
         var script = "#!/bin/bash\n" +
           "# ----------------SLURM Parameters----------------\n" +
           queueStr +
@@ -382,7 +357,7 @@
           modulesStr +
           "# ----------------Commands------------------------\n" +
           commandsStr;
-        //make size of textarea auto-grow
+
         $('#slurm').height('auto').empty();
         $('#slurm').val(script);
         var slurmHeight = $('#slurm').height();
@@ -392,13 +367,12 @@
             $('#slurm').height(scroll + "px");
           }
         }
-        //add narrative
+
         populateNarrative(nodes, cpu, memory, runtimeDays, runtimeHour, runtimeMinute, gpu, queue, jobname, sunetid, stdout, stderr, workingdir);
         $('#workingdir').val(workingdir);
       }
-      
 
-      function populateNarrative(nodes, cpu, mem, hour, min, gpu, queue, jobname, sunetid, stdout, stderr, workingdir) {
+      function populateNarrative(nodes, cpu, mem, days, hour, min, gpu, queue, jobname, sunetid, stdout, stderr, workingdir) {
         var narrative = $('#narrative');
         narrative.empty();
         var squeueString = "";
@@ -413,17 +387,16 @@
           var email = sunetid + "@stanford.edu";
           emailString = `<p>You will be notified at ${email} when the job ends or fails. </p>`;
           squeueString = "<code>squeue -u " + sunetid + "</code>";
-          jobHelpString = `<p>After you have submitted this script, look for your job ${jobname} using the terminal command ${squeueString}</p>`
+          jobHelpString = `<p>After you have submitted this script, look for your job ${jobname} using the terminal command ${squeueString}</p>`;
         }
         if (workingdir) {
-          //need a trailing /
-          workingdir += workingdir.endsWith("/") ? "" : "/"
+          workingdir += workingdir.endsWith("/") ? "" : "/";
           output = "in " + workingdir;
         }
 
         if (stdout) {
-          stdout = workingdir + stdout
-          output = stdout
+          stdout = workingdir + stdout;
+          output = stdout;
         }
 
         if (stderr) {
@@ -435,7 +408,7 @@
           }
         }
         if (output) {
-          outputString = `<p>Your output files will be ${output}.</p>`
+          outputString = `<p>Your output files will be ${output}.</p>`;
         }
 
         if (nodes) {
@@ -451,54 +424,52 @@
         }
         var partitionString = "";
         if (queue) {
-          partitionString = " on the " + queue + " partition.</p> ";
+          partitionString = " on the " + queue + " partition.</p>";
         }
-        var introString = "<p>This script requests "
+        var introString = "<p>This script requests ";
         var nodeString = nodes + ", ";
         var cpuString = "with " + cpu + ", ";
         var memString = " and " + mem + "B of memory ";
 
         var timeString = "";
         var timeIntroString = "<p>This job will run up to ";
+        var dayString = "";
         var hourString = "";
-
         var minString = "";
-        var hasMinutes = "";
-        if (min > 0) {
-          hasMinutes = true;
+        var hasMinutes = min > 0;
+        var hasDays = days > 0;
+        if (hasDays) {
+          dayString = days + (days == 1 ? " day, " : " days, ");
         }
-        if (jobname) {
-          var jobnameStr = "<p>This job will have the name "
-        }
-
         if (hour) {
           if (hour != "00") {
-            //remove the leading zero and handle text
-            hour = hour.replaceAll(/^0+/g, "");
+            hour = hour.replace(/^0+/g, "");
             hour = isOne(hour, "hour", "hours");
-            if (hasMinutes) {
-              hourString = timeIntroString + hour + " and "
+            if (hasMinutes || hasDays) {
+              hourString = hour + " and ";
             } else {
-              hourString = timeIntroString + hour + ".</p>"
+              hourString = hour + ".</p>";
             }
           } else {
-            hourString = timeIntroString;
+            hourString = "";
           }
         }
         if (hasMinutes) {
-          minNew = min.replaceAll(/^0+/g, "");
-          minNew = isOne(minNew, "minute", "minutes");
-          minString = minNew + ".</p> "
+          min = min.replace(/^0+/g, "");
+          min = isOne(min, "minute", "minutes");
+          minString = min + ".</p>";
         }
+
         narrative.empty();
         var narrativeString = introString +
           nodeString +
           cpuString +
           gpuString +
           memString +
-
           partitionString +
           timeString +
+          timeIntroString +
+          dayString +
           hourString +
           minString +
           outputString +
@@ -508,19 +479,11 @@
       }
 
       function isOne(string, unit, unitPlural) {
-        var singleString
         if (string == "1") {
-          singleString = "a single " + unit;
-          if (unit == "hour") {
-            singleString = "an " + unit;
-          }
-          if (unit == "minute") {
-            singleString = "1 " + unit;
-          }
+          return "a single " + unit;
         } else {
-          singleString = string + " " + unitPlural
+          return string + " " + unitPlural;
         }
-        return singleString;
       }
 
       function hasClass(elem, className) {
@@ -528,27 +491,16 @@
       }
 
       function populateTimeDropdowns() {
-        //get the max runtime and subtract 1 to prevent a limit of 24 hours and a runtime of 48:59. Max hour/min will be 47:59
-        var runtimeMax = config.config.runtimeLimit
+        var runtimeMax = config.config.runtimeLimit;
         var runtimeMaxHour = config.config.runtimeLimit - 1;
         var runtimeDefault = 2;
         var display;
         var selectedString;
+
         var runtimeHr = $('#runtimeHr');
         runtimeHr.empty();
-
-        
-        // Populate days dropdown
-        var runtimeDays = $('#runtimeDays `');
-        runtimeDays.empty();
-        for (var d = 0; d <= 7; d++) {
-        selectedString = (d == 0) ? " selected" : "";
-         runtimeDays.append('<option value="' + d + '"' + selectedString + '>' + d + '</option>');
-      }
-        
         for (j = 0; j <= runtimeMaxHour; j++) {
           selectedString = (j == runtimeDefault) ? " selected" : "";
-          //handle single-digit numbers
           display = (j > 9) ? j : "0" + j;
           runtimeHr.append('<option value="' + display + '"' + selectedString + '>' + display + '</option>');
         }
@@ -559,8 +511,16 @@
           display = (j > 9) ? j : "0" + j;
           runtimeMin.append('<option value="' + display + '">' + display + '</option>');
         }
+
+        var runtimeDays = $('#runtimeDays');
+        runtimeDays.empty();
+        for (d = 0; d <= 7; d++) {
+          selectedString = (d == 0) ? " selected" : "";
+          runtimeDays.append('<option value="' + d + '"' + selectedString + '>' + d + '</option>');
+        }
+
         var runMaxSpan = $('#runMax');
-        runMaxSpan.text('Limit ' + runtimeMax + ' hours')
+        runMaxSpan.text('Limit ' + runtimeMax + ' hours');
 
         $('.fancy-dropdown').select2({
           theme: 'bootstrap4',
@@ -571,7 +531,7 @@
           getSaveData(e.currentTarget);
         });
       }
-      //integrating a session check
+
       function populateModules(config) {
         var moduleSelect = $('#modules');
         moduleSelect.empty();
@@ -588,9 +548,8 @@
           .then((data) => {
             $.each(data.split(/[\n\r]+/), function(index, line) {
               selectedModule = "";
-              if (regex.test(line)) {} else {
+              if (!regex.test(line)) {
                 if ($.inArray(line, sessionModulesArray) != -1) {
-                  //console.log('match', line);
                   selectedModule = "selected";
                 }
                 moduleSelect.append('<option ' + selectedModule + ' value="' + line + '">' + line + '</option>');
@@ -603,17 +562,15 @@
             });
 
             generateScript();
-
-          })
+          });
       }
+
       $(document).on('input', '.autoresizing', function(e) {
         generateScript();
         this.style.height = 'auto';
-        this.style.height =
-          (this.scrollHeight) + 'px';
+        this.style.height = (this.scrollHeight) + 'px';
       });
 
-      //This is to prevent an error from trying to access the value of a fancy dropdown that hasn't initialized
       function getFancyDropdown(element) {
         var value;
         if ($(element).hasClass("select2-hidden-accessible")) {
@@ -627,30 +584,23 @@
       function checkSession(field) {
         var fieldValue = sessionStorage.getItem(field);
         if (fieldValue) {
-          //console.log('checkSession', field);
-          //console.log('checkSession value', fieldValue);
           return fieldValue;
         }
       }
 
       function startupCheckSession() {
         sessionData = Object(sessionStorage);
-        //console.log(Object(sessionStorage));
         $.each(sessionData, function(k, v) {
           if (k == 'modules') {
-            //console.log('skipping modules')
           } else {
             $('#' + k).val(v);
             $('#' + k).trigger('change');
-            //console.log(k + ' is ' + v);
           }
         });
       }
 
       function saveToSession(fieldId, fieldValue) {
         sessionStorage.setItem(fieldId, fieldValue);
-        //console.log('fieldId', fieldId);
-        //console.log('fieldValue', fieldValue);
       }
 
       function getSaveData(node) {
@@ -684,10 +634,10 @@
           generateScript();
           getSaveData(e.node);
         });
-        $("#modules").on('select2:unselect',function() {
+        $("#modules").on('select2:unselect', function() {
           generateScript();
           getSaveData("#modules");
-        })
+        });
         $("#commands").on('input', function() {
           generateScript();
           getSaveData("#commands");
@@ -696,7 +646,7 @@
           var textToCopy = $("#slurm");
           var text = textToCopy.val();
           copyTextToClipboard(text);
-        })
+        });
         $("#resetBtn").click(function() {
           sessionStorage.clear();
           collapseResourceTableSession();
@@ -706,20 +656,18 @@
           populateResourceDropdowns(config);
           populateTimeDropdowns();
           generateScript();
-        })
-        var resourceTable1 = document.getElementById('resource-table')
+        });
+        var resourceTable1 = document.getElementById('resource-table');
         resourceTable1.addEventListener('hidden.bs.collapse', function(e) {
           sessionStorage.setItem('table-toggle', 'collapsed');
           collapseResourceTableSession();
-        })
+        });
         resourceTable1.addEventListener('shown.bs.collapse', function() {
           sessionStorage.setItem('table-toggle', '');
           collapseResourceTableSession();
         });
       }
-    }, //end renderUI
-
-  }; //end SlurmOMatic
+    },
+  };
   window.addEventListener("load", SlurmOMatic.init());
-
 }(jQuery, window));
