@@ -164,14 +164,15 @@
       }
 
       function populateGpuRadio(config) {
+        // Check the session
         var sessionRadio = checkSession('gpu_radio');
         var $gpugroup = $('#choose-gpu');
         $gpugroup.empty();
         for (i = 0; i < queueLength; i++) {
-          if (config.queues[i].gpus) {
+          if (config.queues[i].gpus && config.queues[i].name !== "gpu") {  // Exclude the generic "gpu" queue
             var gpuFlagRow = $('<div class="form-check"></div>');
             var gpuFlagRadio = $('<input type="radio" class="form-check-input gpu-flag-radio" name="gpuFlag">');
-            var radioValue = config.queues[i].gpuId;
+            var radioValue = config.queues[i].gpuId
             gpuFlagRadio.val(radioValue);
             var gpuFlagRadioId = radioValue.replace(/\s+/g, '-').toLowerCase();
             if (radioValue == sessionRadio) {
@@ -184,7 +185,7 @@
           }
         }
       }
-
+      
       function populateFakeGpu(config) {
         var $gpugroup = $('#choose-gpu');
         var minNodes = 0;
@@ -229,20 +230,23 @@
       }
 
       function handleGPU(queue) {
-        if (queue == "gpu") {
+        if (queue.includes("gpu")) {
           $('.gpu-group').show();
-
+      
           if ($(".gpu-flag-radio:checked").length == 0) {
+            // Select the last radio, so the user doesn't see a bunch of nonsense in the script box
             $('#choose-gpu .gpu-flag-radio').last().prop("checked", true);
             populateResourceDropdowns(config);
           }
-        } else {
+      
+        } else { // Unselect/dump GPU options
           $(".gpu-group").hide();
           $(".gpu-flag-radio").prop('checked', false);
           var $gpus = $('#gpu');
           $gpus.empty();
         }
       }
+      
 
       async function copyTextToClipboard(text) {
         try {
@@ -630,6 +634,7 @@
             generateScript();
           }
         }, false);
+      }      
         $("#modules").on('select2:select', function(e) {
           generateScript();
           getSaveData(e.node);
