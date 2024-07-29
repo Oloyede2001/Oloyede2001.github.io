@@ -6,7 +6,7 @@
 	},
 	"queues": [
 		{
-			"name": "Public",
+			"name": "public",
 			"cpu": "AMD EPYC 7452 (64C 2.3 GHz",
 			"memory": "256GB",
 			"memoryNum":350,
@@ -16,7 +16,7 @@
 			"coresLimit" : 32,
 			"showTable" : true
 		},
-		{	"name": "Large-mem",
+		{	"name": "large-mem",
 			"cpu": "AMD EPYC 7452 (64C 2.3 GHz)",
 			"memory":"2048GB",
 			"memoryNum":350,
