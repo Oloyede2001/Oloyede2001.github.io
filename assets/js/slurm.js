@@ -328,7 +328,7 @@
         var sunetid = $('#sunetid').val();
         var jobname = $('#jobname').val();
         var workingdir = $('#workingdir').val();
-        var email = sunetid + "@stanford.edu";
+        var email = sunetid + "@uc.edu";
         var emailStr = sunetid == "" ? "" : "# Get email notification when job finishes or fails\n#SBATCH --mail-user=" + email + "\n#SBATCH --mail-type=END,FAIL\n";
         var jobnameStr = jobname == "" ? "" : "# Give your job a name, so you can recognize it in the queue overview\n#SBATCH -J " + jobname + "\n";
         var workingdirStr = workingdir == "" ? "" : "#SBATCH -D " + workingdir + "\n";
