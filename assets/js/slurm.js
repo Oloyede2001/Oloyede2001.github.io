@@ -293,7 +293,7 @@
         var runtimeFormat = runtimeDays + "-" + runtimeHour + ":" + runtimeMinute + ":00";
         var gpu = $("#gpu").val();
         var cpuStr = "#SBATCH --ntasks " + cpu + "\n";
-        var memStr = "#SBATCH --mem=" + memory + "\n";
+        var memStr = "#SBATCH --mem=" + memory + "G\n";
         var nodesStr = "#SBATCH --nodes " + nodes + "\n";
         var runtimeString = "# Define how long the job will run d-hh:mm:ss\n#SBATCH --time " + runtimeFormat + "\n";
         var gpuStr = gpu ? "#SBATCH --gres=gpu:" + gpu + "\n" : "";
