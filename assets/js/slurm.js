@@ -88,7 +88,7 @@
           $queueList.append(queueRow);
         }
         if (!sessionRadio) {
-          $('#choose-queue .queue_radio').first().prop("checked", true);
+          $('#choose-queue .queue_radio').any().prop("checked", true);
         }
       }
 
