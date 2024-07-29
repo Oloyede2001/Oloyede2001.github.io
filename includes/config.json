@@ -30,7 +30,7 @@
 			"coresLimit" : 20,
 			"showTable" : true
 		},
-		{	"name": "Short",
+		{	"name": "short",
 			"cpu": "AMD EPYC 7452 (64C 2.3 GHz",
 			"memory":"256GB",
 			"memoryNum":256,
