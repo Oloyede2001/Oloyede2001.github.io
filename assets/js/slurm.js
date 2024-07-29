@@ -634,7 +634,7 @@
             generateScript();
           }
         }, false);
-      }      
+        
         $("#modules").on('select2:select', function(e) {
           generateScript();
           getSaveData(e.node);
