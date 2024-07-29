@@ -19,7 +19,7 @@
         queueLength = config.queues.length;
         populateResourceTable(config);
         populateQueueRadio(config);
-        populateGpuRadio(config);
+        //populateGpuRadio(config);
         populateModules(config);
         populateResourceDropdowns(config);
         populateTimeDropdowns();
@@ -88,7 +88,7 @@
           $queueList.append(queueRow);
         }
         if (!sessionRadio) {
-          $('#choose-queue .queue_radio').any().prop("checked", true);
+          $('#choose-queue .queue_radio').first().prop("checked", true);
         }
       }
 
