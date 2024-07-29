@@ -7,10 +7,10 @@
 	"queues": [
 		{
 			"name": "public",
-			"cpu": "AMD EPYC 7452 (64C 2.3 GHz",
+			"cpu": "AMD EPYC 7452 (64C 2.3 GHz)",
 			"memory": "256GB",
 			"memoryNum":350,
-			"nodes": "92",
+			"nodes": "90",
 			"displayNodes" : "16",
 			"cores" : 72,
 			"coresLimit" : 32,
@@ -30,7 +30,7 @@
 			"showTable" : true
 		},
 		{	"name": "short",
-			"cpu": "AMD EPYC 7452 (64C 2.3 GHz",
+			"cpu": "AMD EPYC 7452 (64C 2.3 GHz)",
 			"memory":"256GB",
 			"memoryNum":256,
 			"nodes": "2",
@@ -44,7 +44,7 @@
 		},
 
 		{	"name": "gpu-v100",
-			"cpu": "AMD EPYC 7452 (64C 2.3 GHz",
+			"cpu": "AMD EPYC 7452 (64C 2.3 GHz)",
 			"memory":"256GB",
 			"memoryNum":256,
 			"nodes": "1",
@@ -59,8 +59,8 @@
 		},
 
 		{	"name": "gpu-a100",
-			"cpu": "AMD EPYC 7452 (64C 2.3 GHz",
-			"memory":"512GB",
+			"cpu": "AMD EPYC 7452 (64C 2.3 GHz)",
+			"memory":"1024GB",
 			"memoryNum":256,
 			"nodes": "7",
 			"displayNodes" : "6",
@@ -74,8 +74,8 @@
 		},
 
 		{	"name": "gpu-a100-mid",
-			"cpu": "AMD EPYC 7452 (64C 2.3 GHz",
-			"memory":"256GB",
+			"cpu": "AMD EPYC 7452 (64C 2.3 GHz)",
+			"memory":"1024GB",
 			"memoryNum":256,
 			"nodes": "2",
 			"displayNodes" : "6",
@@ -90,7 +90,7 @@
 
 		{	"name": "gpu-h100",
 			"cpu": "Intel Xeon Plantinum 8468 (94C 2.1 GHz)",
-			"memory":"1GB",
+			"memory":"1024GB",
 			"memoryNum":256,
 			"nodes": "1",
 			"displayNodes" : "6",
