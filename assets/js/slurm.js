@@ -160,7 +160,7 @@
         for (j = 1; j <= config.queues[i].memoryNum; j++) {
           $memory.append('<option value="' + j + 'G">' + j + '</option>');
         }
-        $($memory).val("1G");
+        $($memory).val("");
       }
 
       function populateGpuRadio(config) {
@@ -292,8 +292,9 @@
         var runtimeMinute = getFancyDropdown('#runtimeMin');
         var runtimeFormat = runtimeDays + "-" + runtimeHour + ":" + runtimeMinute + ":00";
         var gpu = $("#gpu").val();
+        var GB = G;
         var cpuStr = "#SBATCH --ntasks " + cpu + "\n";
-        var memStr = "#SBATCH --mem= G" + memory + "\n";
+        var memStr = "#SBATCH --mem= "+ GB + memory + "\n";
         var nodesStr = "#SBATCH --nodes " + nodes + "\n";
         var runtimeString = "# Define how long the job will run d-hh:mm:ss\n#SBATCH --time " + runtimeFormat + "\n";
         var gpuStr = gpu ? "#SBATCH --gres=gpu:" + gpu + "\n" : "";
