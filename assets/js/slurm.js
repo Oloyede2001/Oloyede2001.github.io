@@ -163,27 +163,6 @@
         $($memory).val("");
       }
 
-      function populateGpuRadio(config) {
-        var sessionRadio = checkSession('gpu_radio');
-        var $gpugroup = $('#choose-gpu');
-        $gpugroup.empty();
-        for (i = 0; i < queueLength; i++) {
-          if (config.queues[i].gpus) {
-            var gpuFlagRow = $('<div class="form-check"></div>');
-            var gpuFlagRadio = $('<input type="radio" class="form-check-input gpu-flag-radio" name="gpuFlag">');
-            var radioValue = config.queues[i].gpuId;
-            gpuFlagRadio.val(radioValue);
-            var gpuFlagRadioId = radioValue.replace(/\s+/g, '-').toLowerCase();
-            if (radioValue == sessionRadio) {
-              gpuFlagRadio.prop('checked', true);
-            }
-            gpuFlagRadio.attr("data-flag", config.queues[i].gpuFlag).prop('id', gpuFlagRadioId + i);
-            gpuFlagRadio.appendTo(gpuFlagRow);
-            $('<label class="form-check-label mt-2">').prop('for', gpuFlagRadioId + i).html(config.queues[i].gpus).appendTo(gpuFlagRow);
-            $gpugroup.append(gpuFlagRow);
-          }
-        }
-      }
 
       function populateFakeGpu(config) {
         var $gpugroup = $('#choose-gpu');
