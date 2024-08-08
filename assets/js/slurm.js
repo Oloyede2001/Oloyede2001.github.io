@@ -19,7 +19,7 @@
         queueLength = config.queues.length;
         populateResourceTable(config);
         populateQueueRadio(config);
-        populateGpuRadio(config);
+        //populateGpuRadio(config);
         populateModules(config);
         populateResourceDropdowns(config);
         populateTimeDropdowns();
