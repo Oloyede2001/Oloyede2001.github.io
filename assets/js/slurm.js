@@ -163,6 +163,27 @@
         $($memory).val("");
       }
 
+      function populateGpuRadio(config) {
+        var sessionRadio = checkSession('gpu_radio');
+        var $gpugroup = $('#choose-gpu');
+        $gpugroup.empty();
+        for (i = 0; i < queueLength; i++) {
+          if (config.queues[i].gpus) {
+            var gpuFlagRow = $('<div class="form-check"></div>');
+            var gpuFlagRadio = $('<input type="radio" class="form-check-input gpu-flag-radio" name="gpuFlag">');
+            var radioValue = config.queues[i].gpuId;
+            gpuFlagRadio.val(radioValue);
+            var gpuFlagRadioId = radioValue.replace(/\s+/g, '-').toLowerCase();
+            if (radioValue == sessionRadio) {
+              gpuFlagRadio.prop('checked', true);
+            }
+            gpuFlagRadio.attr("data-flag", config.queues[i].gpuFlag).prop('id', gpuFlagRadioId + i);
+            gpuFlagRadio.appendTo(gpuFlagRow);
+            $('<label class="form-check-label mt-2">').prop('for', gpuFlagRadioId + i).html(config.queues[i].gpus).appendTo(gpuFlagRow);
+            $gpugroup.append(gpuFlagRow);
+          }
+        }
+      }
 
       function populateFakeGpu(config) {
         var $gpugroup = $('#choose-gpu');
@@ -262,7 +283,7 @@
       function generateScript() {
         var queue = $('.queue_radio:checked').val();
         var queueStr = "#SBATCH --partition " + queue + "\n";
-
+    
         var cpu = getFancyDropdown('#cpu');
         var memory = getFancyDropdown('#memory');
         var nodes = getFancyDropdown('#nodes');
@@ -275,35 +296,35 @@
         var memStr = "#SBATCH --mem=" + memory + "G\n";
         var nodesStr = "#SBATCH --nodes " + nodes + "\n";
         var runtimeString = "# Define how long the job will run d-hh:mm:ss\n#SBATCH --time " + runtimeFormat + "\n";
-        var gpuStr = gpu ? "#SBATCH --gres=gpu:" + gpu + "\n" : "";
+        var gpuStr = gpu ? "#SBATCH --gres=gpu:1\n" : ""; // Check if GPU is selected and add the appropriate SLURM line
         var gpuFlagStr = "";
         var gpuFlag = $('.gpu-flag-radio:checked').attr("data-flag");
         if (gpuFlag) {
-          gpuFlagStr = gpuFlag + "\n";
+            gpuFlagStr = gpuFlag + "\n";
         }
-
+    
         var modules;
         if ($('#modules').hasClass("select2-hidden-accessible")) {
-          modules = $('#modules').select2('val');
+            modules = $('#modules').select2('val');
         } else {
-          $('#modules').select2({
-            theme: 'bootstrap4',
-            width: 'resolve',
-            multiple: true
-          });
-          modules = $('#modules').select2('val');
+            $('#modules').select2({
+                theme: 'bootstrap4',
+                width: 'resolve',
+                multiple: true
+            });
+            modules = $('#modules').select2('val');
         }
-
+    
         var modulesStr = "";
         if (modules != null) {
-          for (i = 0; i < modules.length; i++) {
-            modulesStr += "module load " + modules[i].replace(/\(default\)/, "") + "\n";
-          }
+            for (i = 0; i < modules.length; i++) {
+                modulesStr += "module load " + modules[i].replace(/\(default\)/, "") + "\n";
+            }
         }
-
+    
         var commands = $('#commands').val();
         var commandsStr = commands + "\n";
-
+    
         var sunetid = $('#sunetid').val();
         var jobname = $('#jobname').val();
         var workingdir = $('#workingdir').val();
@@ -311,32 +332,34 @@
         var emailStr = sunetid == "" ? "" : "# Get email notification when job finishes or fails\n#SBATCH --mail-user=" + email + "\n#SBATCH --mail-type=END,FAIL\n";
         var jobnameStr = jobname == "" ? "" : "# Give your job a name, so you can recognize it in the queue overview\n#SBATCH -J " + jobname + "\n";
         var workingdirStr = workingdir == "" ? "" : "#SBATCH -D " + workingdir + "\n";
-
+    
         var stdout = $('#stdout').val();
         var stderr = $('#stderr').val();
-
+    
         var stdoutStr = stdout == "" ? "" : "#SBATCH -o " + stdout + "\n";
         var stderrStr = stderr == "" ? "" : "#SBATCH -e " + stderr + "\n";
-
+    
         var script = "#!/bin/bash\n" +
-          "# ----------------SLURM Parameters----------------\n" +
-          queueStr +
-          gpuFlagStr +
-          cpuStr +
-          memStr +
-          gpuStr +
-          nodesStr +
-          runtimeString +
-          emailStr +
-          jobnameStr +
-          workingdirStr +
-          stdoutStr +
-          stderrStr +
-          "# ----------------Load Modules--------------------\n" +
-          modulesStr +
-          "# ----------------Commands------------------------\n" +
-          commandsStr;
-
+            "# ----------------SLURM Parameters----------------\n" +
+            queueStr +
+            cpuStr +
+            memStr +
+            nodesStr +
+            runtimeString +
+            gpuStr +  // Add this line to handle GPU resource request
+            gpuFlagStr +
+            emailStr +
+            jobnameStr +
+            workingdirStr +
+            stdoutStr +
+            stderrStr +
+            "# ----------------Load Modules--------------------\n" +
+            modulesStr +
+            "# ----------------Commands------------------------\n" +
+            commandsStr;
+    
+        $('#slurm').val(script);
+        $('#slurm').css('height', 'auto').height($('#slurm')[0].scrollHeight);
         $('#slurm').height('auto').empty();
         $('#slurm').val(script);
         var slurmHeight = $('#slurm').height();
