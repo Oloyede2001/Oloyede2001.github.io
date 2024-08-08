@@ -296,7 +296,7 @@
         var memStr = "#SBATCH --mem=" + memory + "G\n";
         var nodesStr = "#SBATCH --nodes " + nodes + "\n";
         var runtimeString = "# Define how long the job will run d-hh:mm:ss\n#SBATCH --time " + runtimeFormat + "\n";
-        var gpuStr = gpu ? "#SBATCH --gres=gpu:1\n" : ""; // Check if GPU is selected and add the appropriate SLURM line
+        var gpuStr = gpu && gpu !== '0' ? "#SBATCH --gres=gpu:" + gpu + "\n" : ""; // Ensure it adds the GPU line only if a GPU is selected and not zero.
         var gpuFlagStr = "";
         var gpuFlag = $('.gpu-flag-radio:checked').attr("data-flag");
         if (gpuFlag) {
@@ -346,7 +346,7 @@
             memStr +
             nodesStr +
             runtimeString +
-            gpuStr +  // Add this line to handle GPU resource request
+            gpuStr +  // Ensures GPU line is correctly added
             gpuFlagStr +
             emailStr +
             jobnameStr +
@@ -360,6 +360,7 @@
     
         $('#slurm').val(script);
         $('#slurm').css('height', 'auto').height($('#slurm')[0].scrollHeight);
+    
         $('#slurm').height('auto').empty();
         $('#slurm').val(script);
         var slurmHeight = $('#slurm').height();
