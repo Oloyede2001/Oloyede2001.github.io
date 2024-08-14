@@ -282,7 +282,7 @@
 
       function generateScript() {
         var queue = $('.queue_radio:checked').val();
-        var queueStr = "#SBATCH --partition " + queue + "\n";
+        var queueStr = "#SBATCH --partition=" + queue + "\n";
     
         var cpu = getFancyDropdown('#cpu');
         var memory = getFancyDropdown('#memory');
@@ -292,35 +292,24 @@
         var runtimeMinute = getFancyDropdown('#runtimeMin');
         var runtimeFormat = runtimeDays + "-" + runtimeHour + ":" + runtimeMinute + ":00";
         var gpu = $("#gpu").val();
-        var cpuStr = "#SBATCH --ntasks " + cpu + "\n";
+        var cpuStr = "#SBATCH --ntasks=" + cpu + "\n";
         var memStr = "#SBATCH --mem=" + memory + "G\n";
-        var nodesStr = "#SBATCH --nodes " + nodes + "\n";
-        var runtimeString = "# Define how long the job will run d-hh:mm:ss\n#SBATCH --time " + runtimeFormat + "\n";
-        var gpuStr = gpu && gpu !== '0' ? "#SBATCH --gres=gpu:" + gpu + "\n" : ""; // Ensure it adds the GPU line only if a GPU is selected and not zero.
-        var gpuFlagStr = "";
+        var nodesStr = "#SBATCH --nodes=" + nodes + "\n";
+        var runtimeString = "# Define how long the job will run d-hh:mm:ss\n#SBATCH --time=" + runtimeFormat + "\n";
+    
+        // Conditional GPU string addition
+        var gpuStr = gpu && gpu !== '0' ? "#SBATCH --gres=gpu:" + gpu + "\n" : "";
+    
         var gpuFlag = $('.gpu-flag-radio:checked').attr("data-flag");
-        if (gpuFlag) {
-            gpuFlagStr = gpuFlag + "\n";
-        }
+        var gpuFlagStr = gpuFlag ? gpuFlag + "\n" : "";
     
-        var modules;
-        if ($('#modules').hasClass("select2-hidden-accessible")) {
-            modules = $('#modules').select2('val');
-        } else {
-            $('#modules').select2({
-                theme: 'bootstrap4',
-                width: 'resolve',
-                multiple: true
-            });
-            modules = $('#modules').select2('val');
-        }
+        var modules = $('#modules').hasClass("select2-hidden-accessible") ? $('#modules').select2('val') : $('#modules').select2({
+            theme: 'bootstrap4',
+            width: 'resolve',
+            multiple: true
+        }).select2('val');
     
-        var modulesStr = "";
-        if (modules != null) {
-            for (i = 0; i < modules.length; i++) {
-                modulesStr += "module load " + modules[i].replace(/\(default\)/, "") + "\n";
-            }
-        }
+        var modulesStr = modules ? modules.map(module => "module load " + module.replace(/\(default\)/, "") + "\n").join('') : "";
     
         var commands = $('#commands').val();
         var commandsStr = commands + "\n";
@@ -329,34 +318,36 @@
         var jobname = $('#jobname').val();
         var workingdir = $('#workingdir').val();
         var email = sunetid + "@uc.edu";
-        var emailStr = sunetid == "" ? "" : "# Get email notification when job finishes or fails\n#SBATCH --mail-user=" + email + "\n#SBATCH --mail-type=END,FAIL\n";
-        var jobnameStr = jobname == "" ? "" : "# Give your job a name, so you can recognize it in the queue overview\n#SBATCH -J " + jobname + "\n";
-        var workingdirStr = workingdir == "" ? "" : "#SBATCH -D " + workingdir + "\n";
+        var emailStr = sunetid ? "# Get email notification when job finishes or fails\n#SBATCH --mail-user=" + email + "\n#SBATCH --mail-type=END,FAIL\n" : "";
+        var jobnameStr = jobname ? "# Give your job a name, so you can recognize it in the queue overview\n#SBATCH -J " + jobname + "\n" : "";
+        var workingdirStr = workingdir ? "#SBATCH -D " + workingdir + "\n" : "";
     
         var stdout = $('#stdout').val();
         var stderr = $('#stderr').val();
-    
-        var stdoutStr = stdout == "" ? "" : "#SBATCH -o " + stdout + "\n";
-        var stderrStr = stderr == "" ? "" : "#SBATCH -e " + stderr + "\n";
+        var stdoutStr = stdout ? "#SBATCH -o " + stdout + "\n" : "";
+        var stderrStr = stderr ? "#SBATCH -e " + stderr + "\n" : "";
     
         var script = "#!/bin/bash\n" +
-            "# ----------------SLURM Parameters----------------\n" +
-            queueStr +
-            cpuStr +
-            memStr +
-            nodesStr +
-            runtimeString +
-            gpuStr +  // Ensures GPU line is correctly added
-            gpuFlagStr +
-            emailStr +
-            jobnameStr +
-            workingdirStr +
-            stdoutStr +
-            stderrStr +
-            "# ----------------Load Modules--------------------\n" +
-            modulesStr +
-            "# ----------------Commands------------------------\n" +
-            commandsStr;
+                     "# ----------------SLURM Parameters----------------\n" +
+                     queueStr +
+                     cpuStr +
+                     memStr +
+                     nodesStr +
+                     runtimeString +
+                     gpuStr +
+                     gpuFlagStr +
+                     emailStr +
+                     jobnameStr +
+                     workingdirStr +
+                     stdoutStr +
+                     stderrStr +
+                     "# ----------------Load Modules--------------------\n" +
+                     modulesStr +
+                     "# ----------------Commands------------------------\n" +
+                     commandsStr;
+    
+        $('#slurm').val(script);
+        $('#slurm').css('height', 'auto').height($('#slurm')[0].scrollHeight)
     
         $('#slurm').val(script);
         $('#slurm').css('height', 'auto').height($('#slurm')[0].scrollHeight);
